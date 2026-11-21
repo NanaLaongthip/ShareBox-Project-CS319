@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  DONOR
+  RECIPIENT
+  ADMIN
+}
+
+enum Condition {
+  NEW
+  GOOD
+  USED
+}
+
+enum ItemStatus {
+  PENDING_REVIEW
+  AVAILABLE
+  REJECTED
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SHIPPED
+  DELIVERED
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(DONOR)
+  orgName      String?
+  phone        String?
+  createdAt    DateTime  @default(now())
+  items        Item[]
+  requests     Request[]
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  items Item[]
+}
+
+model Item {
+  id          Int        @id @default(autoincrement())
+  name        String
+  description String
+  imageUrl    String?
+  condition   Condition
+  quantity    Int
+  status      ItemStatus @default(PENDING_REVIEW)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  categoryId  Int
+  category    Category   @relation(fields: [categoryId], references: [id])
+  donorId     Int?
+  donor       User?      @relation(fields: [donorId], references: [id], onDelete: SetNull)
+  requests    Request[]
+
+  @@index([status])
+}
+
+model Request {
+  id          Int           @id @default(autoincrement())
+  quantity    Int
+  reason      String
+  status      RequestStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  itemId      Int
+  item        Item          @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  recipientId Int
+  recipient   User          @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@unique([itemId, recipientId])
+}
