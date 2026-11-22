@@ -7,6 +7,8 @@ import type { AdminRequest } from "../types";
 const roles = { ADMIN: "เจ้าหน้าที่", DONOR: "ผู้บริจาค", RECIPIENT: "องค์กรผู้รับ" } as const;
 const statuses = { PENDING: "รออนุมัติ", APPROVED: "นัดวันเข้ารับ", REJECTED: "ไม่อนุมัติ", SHIPPED: "อยู่ระหว่างจัดส่ง", DELIVERED: "ผู้รับได้รับพัสดุแล้ว" } as const;
 
+// หน้านี้เป็นศูนย์ควบคุมของ ADMIN: ดูคำขอ, เปิดรายละเอียดก่อนตัดสินใจ,
+// อนุมัติ/ปฏิเสธ, เริ่มจัดส่ง และตรวจรายชื่อผู้ใช้ในระบบ
 // TODO [Admin workflow]: modal บังคับให้ตรวจข้อมูลก่อนอนุมัติ/ปฏิเสธ และแยกปุ่มตามสถานะ
 // วันนัดกับหมายเหตุยังเป็นช่องกรอกชั่วคราว ต้องผูก mutation เพิ่มเมื่อ DB master เพิ่มฟิลด์
 export function AdminPage() {

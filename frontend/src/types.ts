@@ -1,3 +1,5 @@
+// ไฟล์นี้เป็นสัญญาข้อมูลระหว่าง Frontend กับ Backend ทำให้ TypeScript ตรวจชื่อ field/status
+// ก่อนนำข้อมูลไปแสดงผล หาก Backend เปลี่ยน response ต้องแก้ไฟล์นี้พร้อมกัน
 // TODO [API contract]: types เหล่านี้ต้องแก้พร้อม backend response เสมอ
 // โดยเฉพาะ status และ field นัดรับ/แจ้งเตือน เพื่อป้องกัน UI แสดงสถานะผิดจากฐานข้อมูล
 export type Role = "DONOR" | "RECIPIENT" | "ADMIN";

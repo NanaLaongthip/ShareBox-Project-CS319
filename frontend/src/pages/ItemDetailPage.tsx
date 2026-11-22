@@ -4,6 +4,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { useAuthStore } from "../stores/authStore";
 
+// หน้านี้แสดงของรายชิ้น และให้ RECIPIENT ส่งคำขอรับของผ่าน POST /api/requests
+// DONOR/ผู้ที่ยังไม่ login ดูรายละเอียดได้ แต่ไม่ควรเห็นฟอร์มขอรับของ
 export function ItemDetailPage() {
   const { id = "" } = useParams();
   const navigate = useNavigate();

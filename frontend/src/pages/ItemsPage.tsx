@@ -5,6 +5,8 @@ import { api } from "../api/client";
 
 const conditionLabel = { NEW: "ของใหม่", GOOD: "สภาพดี", USED: "มือสอง" } as const;
 
+// หน้านี้คือคลังสาธารณะ ใช้ค้นหา/กรองหมวดหมู่และเปิดดูรายละเอียดของบริจาค
+// ข้อมูลทั้งหมดมาจาก GET /api/items ผ่าน TanStack Query ไม่ใช่ข้อมูล mock ในหน้าเว็บ
 export function ItemsPage() {
   const [search, setSearch] = useState("");
   const [categoryId, setCategoryId] = useState("");

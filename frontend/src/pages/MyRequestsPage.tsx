@@ -4,6 +4,8 @@ import { api } from "../api/client";
 
 const statusLabel = { PENDING: "รออนุมัติ", APPROVED: "นัดวันเข้ารับ", REJECTED: "ไม่อนุมัติ", SHIPPED: "อยู่ระหว่างจัดส่ง", DELIVERED: "ผู้รับได้รับพัสดุแล้ว" } as const;
 
+// หน้านี้แสดงคำขอของ RECIPIENT และเป็นจุดที่ผู้รับยืนยัน DELIVERED ได้
+// การยืนยันจะเรียก PATCH /api/requests/:id/confirm และ invalidate cache ให้ UI อัปเดต
 export function MyRequestsPage() {
   const queryClient = useQueryClient();
   const requests = useQuery({ queryKey: ["my-requests"], queryFn: api.myRequests });

@@ -1,4 +1,6 @@
 import type { AdminRequest, ApiResponse, Category, DonationRequest, Item, SystemUser, User } from "../types";
+// ส่วนนี้เป็นชั้นกลางระหว่างทุกหน้าเว็บกับ REST API
+// รวม base URL, token header, การอ่าน response และการแปลง error ไว้จุดเดียว
 // TODO [Deploy]: VITE_API_URL ต้องชี้ไป backend ที่ deploy แล้วและลงท้ายด้วย /api
 // ค่า localhost มีไว้สำหรับพัฒนาในเครื่องเท่านั้น
 const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:3000/api";

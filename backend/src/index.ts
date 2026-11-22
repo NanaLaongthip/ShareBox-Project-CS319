@@ -9,6 +9,8 @@ import requestsRouter from "./routes/requests";
 import adminRouter from "./routes/admin";
 import { errorHandler, notFound } from "./middlewares/errorHandler";
 
+// ส่วนนี้คือจุดเริ่มต้นของ Backend: สร้าง Express app, เปิด middleware กลาง,
+// ผูก route ของแต่ละ feature และเปิด HTTP server ให้ Frontend เรียกใช้งาน
 const app = express();
 
 // TODO [CORS]: production ต้องกำหนด CLIENT_URL เป็นโดเมน Frontend จริงของ Vercel

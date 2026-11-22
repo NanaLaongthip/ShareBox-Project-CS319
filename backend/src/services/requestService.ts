@@ -2,6 +2,8 @@ import { prisma } from "../lib/prisma";
 import { HttpError } from "../middlewares/errorHandler";
 import type { RequestStatus } from "../generated/prisma/client";
 
+// ส่วนนี้ดูแลคำขอรับของและวงจรสถานะพัสดุ ตั้งแต่ผู้รับขอของจนถึงยืนยันได้รับของ
+// การแยกเป็น service ทำให้ route ไม่ต้องรู้รายละเอียด transaction และการตรวจ ownership
 export class RequestService {
   // TODO [Tracking]: จำกัดข้อมูล donor/recipient ตามเจ้าของรายการและ ADMIN
   // ห้ามส่ง passwordHash หรือข้อมูลส่วนตัวเกินกว่าหน้าติดตามพัสดุต้องใช้

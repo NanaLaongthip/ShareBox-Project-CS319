@@ -5,6 +5,8 @@ import { api } from "../api/client";
 const labels = { PENDING: "รออนุมัติ", APPROVED: "นัดวันเข้ารับ", REJECTED: "ไม่อนุมัติ", SHIPPED: "อยู่ระหว่างจัดส่ง", DELIVERED: "ผู้รับได้รับพัสดุแล้ว" } as const;
 const stages = ["PENDING", "APPROVED", "SHIPPED", "DELIVERED"] as const;
 
+// หน้านี้เน้น timeline ของพัสดุสำหรับ RECIPIENT โดยใช้ข้อมูลชุดเดียวกับคำขอของฉัน
+// หากเพิ่มวันนัด/ผู้ขนส่ง/เลขติดตาม ต้องขยายทั้ง type, API response และ timeline พร้อมกัน
 export function TrackingPage() {
   const queryClient = useQueryClient();
   const requests = useQuery({ queryKey: ["my-requests"], queryFn: api.myRequests });

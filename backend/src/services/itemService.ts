@@ -2,6 +2,8 @@ import { prisma } from "../lib/prisma";
 import { HttpError } from "../middlewares/errorHandler";
 import type { ItemStatus } from "../generated/prisma/client";
 
+// ส่วนนี้รวม business logic ของ “ของบริจาค” ไว้ที่เดียว
+// Route ทำหน้าที่รับ request/ตรวจสิทธิ์ ส่วน service ทำงานกับฐานข้อมูลและกติกาของระบบ
 export class ItemService {
   // TODO [Business rule]: คลังสาธารณะต้องแสดงเฉพาะ AVAILABLE และ quantity > 0
   // ถ้า admin ต้องเห็นของหมดหรือถูกปฏิเสธ ให้สร้าง method แยก ไม่แก้เงื่อนไข public list นี้

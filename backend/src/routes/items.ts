@@ -5,6 +5,8 @@ import { requireAuth, requireRole } from "../middlewares/auth";
 import { asyncHandler } from "../utils/asyncHandler";
 
 const router = Router(); const service = new ItemService();
+// ส่วนนี้คือ HTTP contract ของ feature รายการบริจาค: อ่านคลัง, ดูของรายชิ้น,
+// ดูของของ donor, สร้าง/แก้ไข/ลบรายการ และส่งต่อไปให้ ItemService ทำ business logic
 const itemSchema = z.object({ name: z.string().min(1), description: z.string().min(1), imageUrl: z.string().url().optional().or(z.literal("")), condition: z.enum(["NEW", "GOOD", "USED"]), quantity: z.number().int().nonnegative(), categoryId: z.number().int().positive() });
 const id = (value: string) => { const parsed = Number(value); if (!Number.isInteger(parsed)) throw new Error("Invalid id"); return parsed; };
 

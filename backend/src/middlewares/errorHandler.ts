@@ -12,6 +12,8 @@ export class HttpError extends Error {
   }
 }
 
+// ส่วนนี้แปลง error จาก service, validation และ Prisma ให้เป็น response รูปแบบเดียว
+// Frontend จึงแสดงข้อความผิดพลาดได้โดยไม่ต้องรู้ implementation ภายในของ Backend
 export function notFound(req: Request, _res: Response, next: NextFunction): void {
   next(new HttpError(404, `Not found: ${req.method} ${req.originalUrl}`));
 }

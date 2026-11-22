@@ -7,6 +7,8 @@ datasource db {
   provider = "postgresql"
 }
 
+// ส่วนนี้เป็นโครงสร้างข้อมูลกลางของระบบ: User เป็นผู้ใช้, Item เป็นของบริจาค,
+// Request เป็นคำขอรับของ และ Category ใช้จัดกลุ่มของในคลัง
 // TODO [DB master]: หากเพิ่ม role/status ต้องตรวจ route, service และ tab ใน frontend ให้ครบ
 enum Role {
   DONOR
@@ -40,6 +42,7 @@ enum RequestStatus {
 // TODO [DB master]: เพิ่ม Notification model สำหรับแจ้ง donor เมื่อมีผู้รับจอง/ได้รับพัสดุ
 
 model User {
+  // ผู้ใช้ทุกบทบาทอยู่ในตารางเดียว แล้วแยกสิทธิ์ด้วย Role
   id           Int       @id @default(autoincrement())
   name         String
   email        String    @unique
@@ -59,6 +62,7 @@ model Category {
 }
 
 model Item {
+  // รายการของบริจาคที่ผู้บริจาคสร้าง และ admin อนุมัติให้แสดงในคลังสาธารณะ
   id          Int        @id @default(autoincrement())
   name        String
   description String
@@ -78,6 +82,7 @@ model Item {
 }
 
 model Request {
+  // คำขอรับของเชื่อมผู้รับกับรายการบริจาค และเป็นต้นทางของการติดตามสถานะพัสดุ
   id          Int           @id @default(autoincrement())
   quantity    Int
   reason      String

@@ -8,6 +8,8 @@ type StatusFilter = "ALL" | keyof typeof statusLabel;
 type FormState = { name: string; description: string; imageUrl: string; imageFile: File | null; imagePreview: string; condition: "NEW" | "GOOD" | "USED"; quantity: string; categoryId: string };
 const initialForm: FormState = { name: "", description: "", imageUrl: "", imageFile: null, imagePreview: "", condition: "GOOD", quantity: "1", categoryId: "" };
 
+// หน้านี้เป็นพื้นที่ของ DONOR สำหรับเพิ่มรายการ ดูรายการของตนเอง และกรองสถานะตรวจรับ
+// imageFile/preview เป็น UI เตรียมไว้ก่อน; การบันทึกไฟล์จริงต้องรอ DB/API รองรับ
 export function MyDonationsPage() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);

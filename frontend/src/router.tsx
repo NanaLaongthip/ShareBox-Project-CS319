@@ -12,6 +12,8 @@ import { TrackingPage } from "./pages/TrackingPage";
 
 const roleLabel = { DONOR: "ผู้บริจาค", RECIPIENT: "องค์กรผู้รับ", ADMIN: "เจ้าหน้าที่" } as const;
 
+// Layout เป็นกรอบร่วมของทุกหน้า: navbar, ข้อมูลบัญชี, logout และตำแหน่ง Outlet
+// เมนูที่เห็นจะแตกต่างตาม role แต่สิทธิ์จริงยังต้องตรวจซ้ำที่ Backend
 // TODO [Routing/Auth]: ตอนนี้หน้าใช้ role-based navigation เพื่อซ่อนเมนูที่ไม่เกี่ยวข้อง
 // แต่ production ควรมี ProtectedRoute ตรวจสิทธิ์ซ้ำที่ route/API ไม่พึ่งการซ่อนเมนูอย่างเดียว
 function Layout() {

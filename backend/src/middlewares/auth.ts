@@ -6,6 +6,8 @@ import { HttpError } from "./errorHandler";
 
 type TokenPayload = { sub: string; role: Role; email: string };
 
+// ส่วนนี้เป็นด่านกลางของทุก endpoint ที่ต้องรู้ว่าใครกำลังเรียก API
+// requireAuth ยืนยันตัวตนจาก JWT ส่วน requireRole จำกัดบทบาทหลังจากยืนยันตัวตนแล้ว
 export function requireAuth(req: Request, _res: Response, next: NextFunction): void {
   // TODO [Security]: token เป็นหลักฐานตัวตนเบื้องต้น หากต้องรองรับการปิดบัญชีหรือเปลี่ยน role
   // ระหว่าง token ยังไม่หมดอายุ ให้โหลด user จาก DB และตรวจสถานะซ้ำที่จุดนี้
