@@ -8,3 +8,4 @@ dist
 .env
 src/generated
 backend/src/generated
+unslop/
