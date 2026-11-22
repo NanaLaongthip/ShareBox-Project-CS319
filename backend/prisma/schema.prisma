@@ -53,6 +53,8 @@ model User {
   createdAt    DateTime  @default(now())
   items        Item[]
   requests     Request[]
+  // Back-relation สำหรับแจ้งเตือน
+  notifications Notification[]
 }
 
 model Category {
@@ -77,6 +79,9 @@ model Item {
   donorId     Int?
   donor       User?      @relation(fields: [donorId], references: [id], onDelete: SetNull)
   requests    Request[]
+  // ส่วนเก็บรูปภาพใน DB
+  imageData Bytes?
+  imageMime String?
 
   @@index([status])
 }
@@ -93,8 +98,37 @@ model Request {
   item        Item          @relation(fields: [itemId], references: [id], onDelete: Cascade)
   recipientId Int
   recipient   User          @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  // ส่วนนัดรับ/จัดส่ง
+  pickupScheduledAt DateTime?
+  pickupAt          DateTime?
+  pickupLocation    String?
+  pickupNote        String?
+
+  // Back-relation สำหรับแจ้งเตือน
+  notifications     Notification[]
 
   // TODO [Business rule]: unique นี้กันผู้รับคนเดิมขอของชิ้นเดิมซ้ำ
   // ถ้าต้องขอซ้ำหลัง REJECTED/DELIVERED ให้เปลี่ยนเป็นกติกาใน service แทน unique ถาวร
   @@unique([itemId, recipientId])
+}
+
+enum NotificationType {
+  REQUEST_CREATED
+  REQUEST_APPROVED
+  REQUEST_SHIPPED
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  userId    Int
+  requestId Int?
+  type      NotificationType
+  message   String
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  request Request? @relation(fields: [requestId], references: [id], onDelete: SetNull)
+
+  @@index([userId, readAt])
 }
