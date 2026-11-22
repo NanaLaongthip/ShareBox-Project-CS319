@@ -11,6 +11,8 @@ import { errorHandler, notFound } from "./middlewares/errorHandler";
 
 const app = express();
 
+// TODO [CORS]: production ต้องกำหนด CLIENT_URL เป็นโดเมน Frontend จริงของ Vercel
+// และไม่ควรเปิดเป็น wildcard เพราะ API มีข้อมูลผู้ใช้และเส้นทางที่ต้องยืนยันตัวตน
 app.use(cors({ origin: env.clientUrl }));
 app.use(express.json());
 
@@ -19,6 +21,8 @@ app.get("/api/health", async (_req, res) => {
   res.json({ data: { status: "ok", items } });
 });
 
+// TODO [API contract]: ทุก route ควรรักษารูปแบบ response เป็น { data } หรือ { error }
+// เพื่อให้ frontend แก้จุดเดียวใน api/client.ts ได้ง่ายเมื่อเพิ่ม endpoint ใหม่
 app.use("/api/categories", categoriesRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/items", itemsRouter);

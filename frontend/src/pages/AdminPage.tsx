@@ -7,6 +7,8 @@ import type { AdminRequest } from "../types";
 const roles = { ADMIN: "เจ้าหน้าที่", DONOR: "ผู้บริจาค", RECIPIENT: "องค์กรผู้รับ" } as const;
 const statuses = { PENDING: "รออนุมัติ", APPROVED: "นัดวันเข้ารับ", REJECTED: "ไม่อนุมัติ", SHIPPED: "อยู่ระหว่างจัดส่ง", DELIVERED: "ผู้รับได้รับพัสดุแล้ว" } as const;
 
+// TODO [Admin workflow]: modal บังคับให้ตรวจข้อมูลก่อนอนุมัติ/ปฏิเสธ และแยกปุ่มตามสถานะ
+// วันนัดกับหมายเหตุยังเป็นช่องกรอกชั่วคราว ต้องผูก mutation เพิ่มเมื่อ DB master เพิ่มฟิลด์
 export function AdminPage() {
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<AdminRequest | null>(null);
@@ -15,6 +17,7 @@ export function AdminPage() {
   const [appointmentAt, setAppointmentAt] = useState("");
   const [note, setNote] = useState("");
   const users = useQuery({ queryKey: ["admin-users"], queryFn: api.adminUsers });
+  // TODO [Polling]: เปลี่ยนเป็น notification/realtime เมื่อ backend มี Notification model
   const requests = useQuery({ queryKey: ["admin-requests"], queryFn: api.adminRequests, refetchInterval: 15000 });
   const update = useMutation({ mutationFn: ({ id, status }: { id: number; status: "APPROVED" | "REJECTED" | "SHIPPED" }) => api.updateRequestStatus(id, status), onSuccess: async () => { await queryClient.invalidateQueries({ queryKey: ["admin-requests"] }); setSelected(null); } });
   function openDetails(request: AdminRequest) { setSelected(request); setReviewed(false); setAppointmentAt(""); setNote(""); }

@@ -7,6 +7,8 @@ import { HttpError } from "./errorHandler";
 type TokenPayload = { sub: string; role: Role; email: string };
 
 export function requireAuth(req: Request, _res: Response, next: NextFunction): void {
+  // TODO [Security]: token เป็นหลักฐานตัวตนเบื้องต้น หากต้องรองรับการปิดบัญชีหรือเปลี่ยน role
+  // ระหว่าง token ยังไม่หมดอายุ ให้โหลด user จาก DB และตรวจสถานะซ้ำที่จุดนี้
   const header = req.header("authorization");
   if (!header?.startsWith("Bearer ")) return next(new HttpError(401, "Authentication required"));
   try {
@@ -20,6 +22,8 @@ export function requireAuth(req: Request, _res: Response, next: NextFunction): v
 
 export function requireRole(...roles: Role[]) {
   return (req: Request, _res: Response, next: NextFunction): void => {
+    // TODO [Authorization]: route ที่ใช้ requireRole ต้องวาง requireAuth ไว้ก่อนเสมอ
+    // เพราะ role จะถูกเติมลง req.user โดย middleware ก่อนหน้านี้
     if (!req.user || !roles.includes(req.user.role)) return next(new HttpError(403, "Insufficient permissions"));
     next();
   };

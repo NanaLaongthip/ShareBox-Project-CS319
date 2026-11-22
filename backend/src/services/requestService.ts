@@ -3,6 +3,8 @@ import { HttpError } from "../middlewares/errorHandler";
 import type { RequestStatus } from "../generated/prisma/client";
 
 export class RequestService {
+  // TODO [Tracking]: จำกัดข้อมูล donor/recipient ตามเจ้าของรายการและ ADMIN
+  // ห้ามส่ง passwordHash หรือข้อมูลส่วนตัวเกินกว่าหน้าติดตามพัสดุต้องใช้
   mine(recipientId: number) { return prisma.request.findMany({ where: { recipientId }, include: { item: { include: { category: true } } }, orderBy: { createdAt: "desc" } }); }
 
   async create(itemId: number, recipientId: number, quantity: number, reason: string) {
@@ -30,10 +32,14 @@ export class RequestService {
 
   adminList(status?: RequestStatus) { return prisma.request.findMany({ where: status ? { status } : {}, include: { item: { include: { donor: { select: { id: true, name: true, email: true, phone: true } } } }, recipient: { select: { id: true, name: true, email: true, orgName: true, phone: true } } }, orderBy: { createdAt: "desc" } }); }
 
+  // TODO [Status flow]: ลำดับหลักคือ PENDING -> APPROVED -> SHIPPED -> DELIVERED
+  // ADMIN เป็นผู้เริ่ม SHIPPED และผู้รับเป็นผู้ยืนยัน DELIVERED
   async adminStatus(id: number, status: RequestStatus) {
     return prisma.$transaction(async tx => {
       const request = await tx.request.findUnique({ where: { id }, include: { item: true } });
       if (!request) throw new HttpError(404, "Request not found");
+      // TODO [Atomic stock]: การอนุมัติและตัดจำนวนของต้องอยู่ transaction เดียวกัน
+      // เพื่อป้องกันผู้รับหลายคนกดพร้อมกันแล้ว quantity ติดลบหรือถูกตัดซ้ำ
       if (status === "APPROVED") {
         if (request.status !== "PENDING" || request.item.quantity < request.quantity) throw new HttpError(409, "Request cannot be approved");
         await tx.item.update({ where: { id: request.itemId }, data: { quantity: { decrement: request.quantity } } });

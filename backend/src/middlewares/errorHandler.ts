@@ -17,6 +17,8 @@ export function notFound(req: Request, _res: Response, next: NextFunction): void
 }
 
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction): void {
+  // TODO [Error contract]: คง mapping 400/401/403/404/409/500 นี้ไว้ให้ frontend แสดงข้อความได้
+  // อย่าส่ง stack trace หรือรายละเอียดฐานข้อมูลออกไปใน production
   if (err instanceof HttpError) {
     res.status(err.status).json({ error: { message: err.message } });
     return;

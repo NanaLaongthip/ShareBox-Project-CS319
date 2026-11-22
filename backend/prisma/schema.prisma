@@ -7,6 +7,7 @@ datasource db {
   provider = "postgresql"
 }
 
+// TODO [DB master]: หากเพิ่ม role/status ต้องตรวจ route, service และ tab ใน frontend ให้ครบ
 enum Role {
   DONOR
   RECIPIENT
@@ -32,6 +33,11 @@ enum RequestStatus {
   SHIPPED
   DELIVERED
 }
+
+// TODO [DB master]: เพิ่ม pickupScheduledAt, pickupAt, pickupLocation และ pickupNote
+// เพื่อรองรับนัดเข้ารับและตรวจสอบวันเข้ารับจริงจากระบบ
+// TODO [DB master]: เพิ่ม imageData/imageMime ใน Item หากเลือกเก็บรูปแบบ local ในฐานข้อมูล
+// TODO [DB master]: เพิ่ม Notification model สำหรับแจ้ง donor เมื่อมีผู้รับจอง/ได้รับพัสดุ
 
 model User {
   id           Int       @id @default(autoincrement())
@@ -83,5 +89,7 @@ model Request {
   recipientId Int
   recipient   User          @relation(fields: [recipientId], references: [id], onDelete: Cascade)
 
+  // TODO [Business rule]: unique นี้กันผู้รับคนเดิมขอของชิ้นเดิมซ้ำ
+  // ถ้าต้องขอซ้ำหลัง REJECTED/DELIVERED ให้เปลี่ยนเป็นกติกาใน service แทน unique ถาวร
   @@unique([itemId, recipientId])
 }

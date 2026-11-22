@@ -1,3 +1,5 @@
+// TODO [API contract]: types เหล่านี้ต้องแก้พร้อม backend response เสมอ
+// โดยเฉพาะ status และ field นัดรับ/แจ้งเตือน เพื่อป้องกัน UI แสดงสถานะผิดจากฐานข้อมูล
 export type Role = "DONOR" | "RECIPIENT" | "ADMIN";
 export type ItemRequest = { id: number; quantity: number; status: "PENDING" | "APPROVED" | "REJECTED" | "SHIPPED" | "DELIVERED"; recipient: { id: number; name: string; orgName?: string | null } };
 export type Item = { id: number; name: string; description: string; imageUrl?: string | null; condition: "NEW" | "GOOD" | "USED"; quantity: number; status: "PENDING_REVIEW" | "AVAILABLE" | "REJECTED"; category: { id: number; name: string }; createdAt: string; requests?: ItemRequest[] };

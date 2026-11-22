@@ -12,6 +12,8 @@ import { TrackingPage } from "./pages/TrackingPage";
 
 const roleLabel = { DONOR: "ผู้บริจาค", RECIPIENT: "องค์กรผู้รับ", ADMIN: "เจ้าหน้าที่" } as const;
 
+// TODO [Routing/Auth]: ตอนนี้หน้าใช้ role-based navigation เพื่อซ่อนเมนูที่ไม่เกี่ยวข้อง
+// แต่ production ควรมี ProtectedRoute ตรวจสิทธิ์ซ้ำที่ route/API ไม่พึ่งการซ่อนเมนูอย่างเดียว
 function Layout() {
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
@@ -19,6 +21,7 @@ function Layout() {
   const queryClient = useQueryClient();
   const tabClass = ({ isActive }: { isActive: boolean }) => `nav-tab${isActive ? " active" : ""}`;
 
+  // TODO [Logout]: clear ทั้ง token, Zustand session และ React Query cache เพื่อไม่ให้ข้อมูล role เดิมค้าง
   function handleLogout() { queryClient.clear(); logout(); navigate("/items", { replace: true }); }
 
   return <>
@@ -28,4 +31,6 @@ function Layout() {
   </>;
 }
 
+// TODO [Route map]: route รายการ, คำขอ และ tracking แยกกันเพื่อให้ตอบโจทย์แต่ละ role
+// หากเพิ่มหน้าใหม่ ต้องเพิ่มทั้ง route, nav tab, permission และลิงก์กลับจากหน้ารายละเอียด
 export const router = createBrowserRouter([{ element: <Layout />, children: [{ path: "/", element: <Navigate to="/items" replace /> }, { path: "/items", element: <ItemsPage /> }, { path: "/items/:id", element: <ItemDetailPage /> }, { path: "/my-donations", element: <MyDonationsPage /> }, { path: "/my-donations/:id", element: <DonationStatusPage /> }, { path: "/my-requests", element: <MyRequestsPage /> }, { path: "/tracking", element: <TrackingPage /> }, { path: "/admin", element: <AdminPage /> }, { path: "/login", element: <LoginPage /> }, { path: "*", element: <Navigate to="/items" replace /> }] }]);
