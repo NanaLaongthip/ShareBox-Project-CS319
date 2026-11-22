@@ -1,6 +1,8 @@
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
+  // ESM บน Vercel ต้องมีนามสกุล .js ใน import
+  importFileExtension = "js"
 }
 
 datasource db {

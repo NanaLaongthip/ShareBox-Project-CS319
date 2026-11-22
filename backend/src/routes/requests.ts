@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { z } from "zod";
-import { RequestService } from "../services/requestService";
-import { requireAuth, requireRole } from "../middlewares/auth";
-import { asyncHandler } from "../utils/asyncHandler";
+import { RequestService } from "../services/requestService.js";
+import { requireAuth, requireRole } from "../middlewares/auth.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 const router = Router(); const service = new RequestService();
 router.get("/mine", requireAuth, requireRole("RECIPIENT"), asyncHandler(async (req, res) => res.json({ data: await service.mine(req.user!.id) })));
 router.post("/", requireAuth, requireRole("RECIPIENT"), asyncHandler(async (req, res) => { const body = z.object({ itemId: z.number().int(), quantity: z.number().int().positive(), reason: z.string().min(1) }).parse(req.body); res.status(201).json({ data: await service.create(body.itemId, req.user!.id, body.quantity, body.reason) }); }));

@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { prisma } from "../lib/prisma";
-import { env } from "../config/env";
-import { HttpError } from "../middlewares/errorHandler";
-import type { Role } from "../generated/prisma/client";
+import { prisma } from "../lib/prisma.js";
+import { env } from "../config/env.js";
+import { HttpError } from "../middlewares/errorHandler.js";
+import type { Role } from "../generated/prisma/client.js";
 
 type SignupInput = { name: string; email: string; password: string; role: "DONOR" | "RECIPIENT"; orgName?: string; phone?: string };
 

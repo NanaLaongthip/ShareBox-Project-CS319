@@ -1,6 +1,6 @@
-import { prisma } from "../lib/prisma";
-import { HttpError } from "../middlewares/errorHandler";
-import type { RequestStatus } from "../generated/prisma/client";
+import { prisma } from "../lib/prisma.js";
+import { HttpError } from "../middlewares/errorHandler.js";
+import type { RequestStatus } from "../generated/prisma/client.js";
 
 // ส่วนนี้ดูแลคำขอรับของและวงจรสถานะพัสดุ ตั้งแต่ผู้รับขอของจนถึงยืนยันได้รับของ
 // การแยกเป็น service ทำให้ route ไม่ต้องรู้รายละเอียด transaction และการตรวจ ownership

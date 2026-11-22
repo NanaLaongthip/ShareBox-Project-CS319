@@ -1,6 +1,6 @@
-import { prisma } from "../lib/prisma";
-import { HttpError } from "../middlewares/errorHandler";
-import type { ItemStatus } from "../generated/prisma/client";
+import { prisma } from "../lib/prisma.js";
+import { HttpError } from "../middlewares/errorHandler.js";
+import type { ItemStatus } from "../generated/prisma/client.js";
 
 // ส่วนนี้รวม business logic ของ “ของบริจาค” ไว้ที่เดียว
 // Route ทำหน้าที่รับ request/ตรวจสิทธิ์ ส่วน service ทำงานกับฐานข้อมูลและกติกาของระบบ

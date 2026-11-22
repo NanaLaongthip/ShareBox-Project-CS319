@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { z } from "zod";
-import { AuthService } from "../services/authService";
-import { requireAuth } from "../middlewares/auth";
-import { asyncHandler } from "../utils/asyncHandler";
+import { AuthService } from "../services/authService.js";
+import { requireAuth } from "../middlewares/auth.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = Router();
 const service = new AuthService();

@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { z } from "zod";
-import { requireAuth, requireRole } from "../middlewares/auth";
-import { asyncHandler } from "../utils/asyncHandler";
-import { prisma } from "../lib/prisma";
-import { ItemService } from "../services/itemService";
-import { RequestService } from "../services/requestService";
+import { requireAuth, requireRole } from "../middlewares/auth.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { prisma } from "../lib/prisma.js";
+import { ItemService } from "../services/itemService.js";
+import { RequestService } from "../services/requestService.js";
 const router = Router(); const items = new ItemService(); const requests = new RequestService();
 router.use(requireAuth, requireRole("ADMIN"));
 router.get("/users", asyncHandler(async (_req, res) => res.json({ data: await prisma.user.findMany({ select: { id: true, name: true, email: true, role: true, orgName: true, phone: true, createdAt: true }, orderBy: { createdAt: "desc" } }) })));

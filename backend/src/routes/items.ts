@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { z } from "zod";
-import { ItemService } from "../services/itemService";
-import { requireAuth, requireRole } from "../middlewares/auth";
-import { asyncHandler } from "../utils/asyncHandler";
+import { ItemService } from "../services/itemService.js";
+import { requireAuth, requireRole } from "../middlewares/auth.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = Router(); const service = new ItemService();
 // ส่วนนี้คือ HTTP contract ของ feature รายการบริจาค: อ่านคลัง, ดูของรายชิ้น,
