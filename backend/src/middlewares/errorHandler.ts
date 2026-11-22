@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { Prisma } from "../generated/prisma/client";
+import { ZodError } from "zod";
 
 export class HttpError extends Error {
   status: number;
@@ -18,6 +19,11 @@ export function notFound(req: Request, _res: Response, next: NextFunction): void
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction): void {
   if (err instanceof HttpError) {
     res.status(err.status).json({ error: { message: err.message } });
+    return;
+  }
+
+  if (err instanceof ZodError) {
+    res.status(400).json({ error: { message: err.issues.map((issue) => `${issue.path.join(".")}: ${issue.message}`).join(", ") } });
     return;
   }
 
