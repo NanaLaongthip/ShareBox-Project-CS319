@@ -12,10 +12,10 @@ const id = (value: string) => { const parsed = Number(value); if (!Number.isInte
 
 // TODO [Routing]: /mine ต้องอยู่ก่อน /:id ไม่เช่นนั้นคำว่า mine จะถูกตีความเป็น id
 // และทุก endpoint ที่แก้ไขข้อมูลต้องมีทั้ง authentication และ role/ownership check
-router.get("/mine", requireAuth, requireRole("DONOR"), asyncHandler(async (req, res) => res.json({ data: await service.mine(req.user!.id) })));
+router.get("/mine", requireAuth, requireRole("USER"), asyncHandler(async (req, res) => res.json({ data: await service.mine(req.user!.id) })));
 router.get("/", asyncHandler(async (req, res) => res.json({ data: await service.list(typeof req.query.search === "string" ? req.query.search : undefined, typeof req.query.categoryId === "string" ? Number(req.query.categoryId) : undefined) })));
 router.get("/:id", asyncHandler(async (req, res) => res.json({ data: await service.get(id(String(req.params.id))) })));
-router.post("/", requireAuth, requireRole("DONOR", "ADMIN"), asyncHandler(async (req, res) => res.status(201).json({ data: await service.create(itemSchema.parse(req.body), req.user!.id, req.user!.role === "ADMIN") })));
+router.post("/", requireAuth, requireRole("USER", "ADMIN"), asyncHandler(async (req, res) => res.status(201).json({ data: await service.create(itemSchema.parse(req.body), req.user!.id, req.user!.role === "ADMIN") })));
 router.put("/:id", requireAuth, asyncHandler(async (req, res) => res.json({ data: await service.update(id(String(req.params.id)), itemSchema.partial().parse(req.body), req.user!.id, req.user!.role === "ADMIN") })));
 router.delete("/:id", requireAuth, asyncHandler(async (req, res) => { await service.remove(id(String(req.params.id)), req.user!.id, req.user!.role === "ADMIN"); res.status(204).send(); }));
 export default router;

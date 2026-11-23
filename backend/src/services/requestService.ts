@@ -12,6 +12,8 @@ export class RequestService {
   async create(itemId: number, recipientId: number, quantity: number, reason: string) {
     const item = await prisma.item.findFirst({ where: { id: itemId, status: "AVAILABLE" } });
     if (!item) throw new HttpError(404, "Available item not found");
+    // USER เป็นได้ทั้งผู้บริจาคและผู้รับ จึงต้องกันไม่ให้ขอของที่ตัวเองบริจาค
+    if (item.donorId === recipientId) throw new HttpError(400, "Cannot request your own item");
     if (quantity <= 0 || quantity > item.quantity) throw new HttpError(400, "Requested quantity is invalid");
     return prisma.request.create({ data: { itemId, recipientId, quantity, reason }, include: { item: true } });
   }

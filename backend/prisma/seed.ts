@@ -190,7 +190,7 @@ async function main(): Promise<void> {
       name: `ผู้บริจาค ${i + 1}`,
       email: `donor${i + 1}@sharebox.test`,
       passwordHash,
-      role: "DONOR" as const,
+      role: "USER" as const,
       phone: `08${String(10000000 + i).padStart(8, "0")}`,
     })),
   });
@@ -201,7 +201,7 @@ async function main(): Promise<void> {
       name: `ผู้ประสานงาน ${orgName}`,
       email: `org${i + 1}@sharebox.test`,
       passwordHash,
-      role: "RECIPIENT" as const,
+      role: "USER" as const,
       orgName,
       phone: `09${String(20000000 + i).padStart(8, "0")}`,
     })),

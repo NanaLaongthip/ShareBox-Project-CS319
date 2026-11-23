@@ -5,12 +5,13 @@ import { env } from "../config/env.js";
 import { HttpError } from "../middlewares/errorHandler.js";
 import type { Role } from "../generated/prisma/client.js";
 
-type SignupInput = { name: string; email: string; password: string; role: "DONOR" | "RECIPIENT"; orgName?: string; phone?: string };
+type SignupInput = { name: string; email: string; password: string; orgName?: string; phone?: string };
 
 export class AuthService {
   async signup(input: SignupInput) {
     if (input.password.length < 6) throw new HttpError(400, "Password must be at least 6 characters");
     const passwordHash = await bcrypt.hash(input.password, 12);
+    // ผู้ใช้ที่สมัครเองเป็น USER เสมอ (ค่าเริ่มต้นใน schema) ห้ามรับ role จาก request
     const { password: _password, ...profile } = input;
     const user = await prisma.user.create({ data: { ...profile, passwordHash } });
     return this.publicUser(user);

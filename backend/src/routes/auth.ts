@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 const router = Router();
 const service = new AuthService();
-const signupSchema = z.object({ name: z.string().min(1), email: z.string().email(), password: z.string().min(6), role: z.enum(["DONOR", "RECIPIENT"]), orgName: z.string().optional(), phone: z.string().optional() });
+const signupSchema = z.object({ name: z.string().min(1), email: z.string().email(), password: z.string().min(6), orgName: z.string().optional(), phone: z.string().optional() });
 const loginSchema = z.object({ email: z.string().email(), password: z.string().min(1) });
 
 router.post("/signup", asyncHandler(async (req, res) => res.status(201).json({ data: await service.signup(signupSchema.parse(req.body)) })));
